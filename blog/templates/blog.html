@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mi Blog</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <script>
+        $(document).ready(function(){
+    $(".post-link").click(function(e){
+        e.preventDefault();
+        var postContent = $(this).next('.post-content').html();
+        $('#latest_post').html(postContent);
+    });
+});
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Mi Blog</h1>
+        <button onclick="location.href='/admin'">Administrar publicaciones</button>
+    </header>
+    <div id="latest_post">
+        <h2>Última publicación</h2>
+        <h3>{{ latest_post.titulo }}</h3>
+        <div class="text_post">
+            <p>{{ latest_post.texto }}</p>
+        </div>
+        <h3>Post de: {{ user.username }}</h3>
+    </div>
+    <div class="sub_container">
+        <div id="posts">
+            <h2>Lista de publicaciones ({{ posts.count }})</h2>
+            <ul>
+                {% for post in posts %}
+                    <li>
+                        <a href="#" class="post-link">{{ post.titulo }}</a>
+                        <div class="post-content" style="display: none;">
+                            <h3>{{ post.titulo }}</h3>
+                            <p>{{ post.texto }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="categories">
+            <h2>Categorías</h2>
+            <ul>
+                {% for category in categories %}
+                    <li class="category-item" data-category-id="{{ category.id }}">{{ category.nombre }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="hashtags">
+            <h2>Hashtags</h2>
+            <ul>
+                {% for hashtag in hashtags %}
+                    <li class="hashtag-item" data-hashtag-id="{{ hashtag.id }}">{{ hashtag.nombre }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="container">
+        {% block footer %}
+            Creado por Cristian de la Fuente Araos<sup>&copy;</sup>. Todos los derechos reservados.
+        {% endblock %}
+    </div>
+</body>
+</html>
